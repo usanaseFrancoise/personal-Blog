@@ -12,3 +12,23 @@ class BlogTest(unittest.TestCase):
         
     def tearDown(self):
         '''
+        delete the test
+        '''
+        User.query.delete()
+        Post.query.delete()
+
+    def test_check_instance_variables(self):
+        '''
+        test 
+        '''
+        self.assertEquals(self.newpost.title,'read')
+        self.assertEquals(self.newpost.category.'read')
+        self.assertEquals(self.newpost.user_id,self.user_admin)
+
+    def test_save(self):
+        '''
+        saving
+        '''
+        self.newpost.save_u()
+        got_post=Post.query.get(1)
+        self.assertEquals(le(got_post)==1)
