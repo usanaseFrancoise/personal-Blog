@@ -7,7 +7,7 @@ class BlogTest(unittest.TestCase):
         '''
         method to set all test
         '''
-        self.user=User(username='usanase',pass_secure='havugima@2019'email='fusanasencoise@gmail.com')
+        self.user=User(username='fanny',pass_secure='havugima@2019'email='fusanasencoise@gmail.com')
         self.newpost=Post(title='read',category='read',user_id=self.id)
         
     def tearDown(self):
