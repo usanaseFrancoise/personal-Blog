@@ -32,3 +32,119 @@ def new_post():
         new_post_object.save_p()
         return redirect(url_for('main.index'))
     return render_template('create.html',form=form)
+
+
+@main.route('/comment/<int:post_id>',methods=['GET','POST'])
+@login_required
+def comment(post_id):
+    form=CommentForm()
+    post=Post.query.get(post_id)
+    all_comments=Comment.query.filter_by(post_id=post_id).all()
+    if form.validate_on_submit():
+        comment=form.comment.data
+        post_id=post_id
+        user_id=current_user._get_current_object().id
+        new_comment=Comment(comment=comment,post_id=post_id)
+        new_comment.save_c()
+        
+        return redirect(url_for('.comment',post_id=post_id))
+    return render_template('comment.html',form=form,post=post,all_comments=all_comments)
+
+@main.route('/index/<int:post_id>delete',methods=['GET','POST'])
+@login_required
+def delete(post_id):
+    current_post=Post.query.filter_by(id=post_id).first()
+    if current_post.user !=current_user:
+        abort(403)
+        db.session.delete(currrent_post)
+        db.session.commit()
+        return redirect(url_for('.index'))
+
+ @main.route('/profile/<int:post_id>/',methods['GET','POST'])
+ @login_required
+ def Update_blog(post_id):
+
+     current_post=Post.query.filter_by(id =post_id).first()
+     if current_post.user !=current_user:
+        abort(403)
+     form=UpdateBlogForm()
+     if form.validate_on_submit():
+        current_post.title=form.title.data
+        current_post.category=form.category.data
+        current_post.post=-form.post.data
+        db.session.commit()
+
+        return redirect(url_for('.index'))
+        elif request.methods=='GET':
+            form.title.data=current_post.title
+            form.category.data=current_post.category
+            form.post.data=current_post.post
+
+        return render_template('comment.html',form=form)
+        
+@main.route('/user/<name>')
+def profile(name):
+
+    user=User.query.filter_by(username = name).first()
+    user_id=current_user._get_current_object().id
+    posts=Post.query.filter_by(user_id = user_id).all()
+    if user is None:
+        abort(404)
+    return render_template("profile/profile.html",user=user,posts=posts)
+
+
+@main.route('/index/<int:post_id>delet',methods=['GET','POST'])
+@login_required
+def delet(post_id):
+   comment=Comment.query.filter_by(id =id).first()
+
+    if comment is None :
+        abort(403)
+        db.session.delete(comment)
+        db.session.commit()
+        return redirect(url_for('main.index'))
+
+
+@main.route('/user/<name>/updateprofile',methods=['GET','POST'])
+@login_required
+def updateprofile(name):
+    
+    user=User.query.filter_by(username=name).first()
+   
+    if user == None:
+        abort(404)
+    form=UpdateProfile()
+    if form.validate_on_submit():
+        user.bio=form.bio.data
+        # user.save_u()
+        db.session.add(user)
+        db.session.commit()
+
+        return redirect(url_for('.profile',name=user.username))
+    return render_template('profile/update.html',form=form)
+
+@main.route('/user/<name>/update/pic',methods=['POST'])
+@login_required
+def update_pic(name):
+    user=User.query.filter_by(username=name).first()
+    if  'photo' in request.files:
+        filename=photo.save(request.files['photo'])
+        if 'photo' in request.files:
+            filename=photos.save(request.files['photo'])
+            path=f'photo/{filename}'
+            user.profile_pic_path=path
+            db.session.commit()
+            return redirect(url_for('main/profile',name=name))
+
+@main.route('blog',methods=['GET','POST'])
+@login_required
+def add_blog():
+    form=BlogForm()
+    if fprm.validate_on_submit():
+        article=form.article.data
+        category=form.category.data
+        new_article =Article(article =,category=category,user=current_user)
+        new_article.save_article()
+        return redirect(url_for('.index'))
+        title ='Add a Blog'
+        render_template('blog.html',title=title,form=form)
