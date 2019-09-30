@@ -1,18 +1,19 @@
-{% macro display(piches) %}
+{% macro display(log) %}
 <div class="container-fluid">
     <div class="row">
-        {% if piches %}
-            {% for category in piches %}
+        {% if log %}
+            {% for category in log %}
 				<div class="col-md-3" >
                     <div class="thumbnail" id="carded">
                         <h5 class="card-header"> {{category.title}}</h5>
 						<div class="card-body">
                             <p>{{category.post}}</p>
-                            <p class="text-center">Category: {{category.category}}</p>
+                            
 							<footer class="blockquote-footer text-center"> Posted by: {{category.user.username}}</footer>
-							<div><span class="foot">{{category.comment.count()}} Comments</span>
-                                <span class="foot"><a href="{{url_for('main.comment',post_id=category.id)}}"><i class="fa fa-thumbs-down" style="font-size:18px;color:rgb(211, 18, 18)"></i></a>{{category.comment.count()}} Comment</span>
-                                <span class="foot"><a href="{{url_for('.delete',post_id=category.id)}}"><i class="fa fa-thumbs-down" style="font-size:18px;color:rgb(100, 204, 147)"></i></a>Delete</span>
+							<div>
+                                <a href="{{url_for('main.comment',post_id=category.id)}}" class="btn btn-info btn-sm">{{category.comment.count()}}Comments</a>
+                                
+                                <a href="{{url_for('.delete',post_id=category.id)}}"   style="background-color:rgb(255, 0, 0);color: black;border:2px">Delete</a>
                                 
                             </div>
                             </div>

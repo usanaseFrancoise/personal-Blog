@@ -4,22 +4,22 @@ from flask_login import login_user,login_required,current_user
 # from .forms import RegistrationForm,LoginForm
 from ..models import User,Post,Comment,Quotes
 from .. import db,photos
-from .forms import UpdateProfile,PostForm,CommentForm
+from .forms import UpdateBlogForm,PostForm,CommentsForm
 import requests
 from ..requests import getQuotes
 
 @main.route('/')
+
 def index():
-    Postes=Post.query.all()
+    postes=Post.query.all()
     job=Post.query.filter_by(category='Job').all()
     music=Post.query.filter_by(category='Music').all()
-    news=Post.query.filter_by(category='News').all()
+    news=Post.query.filter_by(category='News').all() 
     quotes=getQuotes()
 
-    return render_template('index.html'job=job,music=music,Postes=Postes,news=news,quotes=quotes)
-    
+    return render_template('index.html',job=job,music=music,postes=postes,news=news,quotes=quotes)
 
-@main.route('/create_new',methods=['GET','POST'])
+@main.route('/create_new/',methods=['GET','POST'])
 @login_required
 def new_post():
     form=PostForm()
@@ -37,7 +37,7 @@ def new_post():
 @main.route('/comment/<int:post_id>',methods=['GET','POST'])
 @login_required
 def comment(post_id):
-    form=CommentForm()
+    form=CommentsForm()
     post=Post.query.get(post_id)
     all_comments=Comment.query.filter_by(post_id=post_id).all()
     if form.validate_on_submit():
@@ -60,9 +60,9 @@ def delete(post_id):
         db.session.commit()
         return redirect(url_for('.index'))
 
- @main.route('/profile/<int:post_id>/',methods['GET','POST'])
- @login_required
- def Update_blog(post_id):
+@main.route('/profile/<int:post_id>/',methods=['GET','POST'])
+@login_required
+def Update_blog(post_id):
 
      current_post=Post.query.filter_by(id =post_id).first()
      if current_post.user !=current_user:
@@ -75,12 +75,11 @@ def delete(post_id):
         db.session.commit()
 
         return redirect(url_for('.index'))
-        elif request.methods=='GET':
+     elif request.method=='GET':
             form.title.data=current_post.title
             form.category.data=current_post.category
             form.post.data=current_post.post
-
-        return render_template('comment.html',form=form)
+     return render_template('comment.html',form=form)
         
 @main.route('/user/<name>')
 def profile(name):
@@ -92,17 +91,17 @@ def profile(name):
         abort(404)
     return render_template("profile/profile.html",user=user,posts=posts)
 
-
-@main.route('/index/<int:post_id>delet',methods=['GET','POST'])
+@main.route('/index/<int:id>/delet',methods=['GET','POST'])
 @login_required
-def delet(post_id):
-   comment=Comment.query.filter_by(id =id).first()
+def delet(id):
 
-    if comment is None :
+    comment= Comment.query.filter_by(id = id).first()
+
+    if comment is None:
         abort(403)
-        db.session.delete(comment)
-        db.session.commit()
-        return redirect(url_for('main.index'))
+    db.session.delete(comment)
+    db.session.commit()
+    return redirect(url_for('main.index'))
 
 
 @main.route('/user/<name>/updateprofile',methods=['GET','POST'])
@@ -136,14 +135,14 @@ def update_pic(name):
             db.session.commit()
             return redirect(url_for('main/profile',name=name))
 
-@main.route('blog',methods=['GET','POST'])
+@main.route('/blog/',methods=['GET','POST'])
 @login_required
 def add_blog():
     form=BlogForm()
     if fprm.validate_on_submit():
         article=form.article.data
         category=form.category.data
-        new_article =Article(article =,category=category,user=current_user)
+        new_article =Article(article =article,category=category,user=current_user)
         new_article.save_article()
         return redirect(url_for('.index'))
         title ='Add a Blog'

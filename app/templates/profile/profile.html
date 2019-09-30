@@ -1,19 +1,29 @@
+
+
+<br>
+
+
+
 {% extends 'base.html' %}
 
 {% block content %}
 
 <div class="container" >
     <div style="margin-left:70%"  class="row" >
-        <div class="col-md-2 pict"> </div>
-        <div  class="card testimonial-card" >
-            <div style="margin-left:30%"class="card-img">
-                {% if user.profile_pic_path %}
-                <img src="{{url_for('static',filename=user.profile_pic_path)}}" style="width: 160px" class="card-img" alt="woman">
-                {% else %}
-                <p>no Profile Picture</p>
-                {% endif %}
-                      
-            </div>
+      
+
+        <div class="col-md-2 pict"></div> 
+                <div class="card testimonial-card" style="width:50%;height:30%">
+                    <div class="margin-left:30%" class="card-img">
+                        {% if user.profile_pic_path %}
+                        <img src="{{url_for('static',filename=user.profile_pic_path)}}" style="height:300px;border-radius: 1%" class="card-img" alt="woman">
+                        {% else %}
+                        <p>no Profile Picture</p>
+                        {% endif %}
+            </div>                  
+
+  
+            
             
         <div  class="card-body">
             <h5 class="text-center">{{user.username | capitalize}}</h5>
@@ -43,15 +53,17 @@
 <div class="col-md-6" id="user" style="bottom: 340px">
     
         {% if current_user %}
-    <h3 > you have {{user.postes.count()}} some  Postes</h3>
+        <br>
+        <br>
+    <h3 style="bottom:-700px" > you have {{user.postes.count()}} some  Postes</h3>
     <br>
     {% for i in posts %}
     <div class="postes">
         <h5>Title: {{i.title}}</h5>
         <hr>
         <h6>{{i.post}}</h6>
-        <a href="{{url_for('main.comment'.post_id=i.id)}}" class="btn btn-sm btn-info">{{i.comment.count()}} Comments</a>
-        <a href="{{url_for('main.update_blog'.post_id=i.id)}}" class="btn btn-sm btn-primary">update</a>
+        <a href="{{url_for('main.comment',post_id=i.id)}}" class="btn btn-sm btn-info">{{i.comment.count()}} Comments</a>
+        <a href="{{url_for('main.Update_blog',post_id=i.id)}}" class="btn btn-sm btn-primary">update</a>
     </div>
     {% endfor %}
     {% else %}

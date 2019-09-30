@@ -15,7 +15,7 @@ class Config:
      # simple mde  configurations
     SIMPLEMDE_JS_IIFE = True
     SIMPLEMDE_USE_CDN = True
-    SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://fanny:havugima@2019@localhost/blogs"
+    SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://fanny:havugima@localhost/blog"
     QUOTES_URL='http://quotes.stormconsultancy.co.uk/random.json'
 
 
@@ -26,7 +26,7 @@ class ProdConfig(Config):
 
 class TestConfig(Config):
 
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://fanny:havugima@2019@localhost/blogstest'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://fanny:havugima@localhost/blogstest'
 
 class DevConfig(Config):
     DEBUG = True 

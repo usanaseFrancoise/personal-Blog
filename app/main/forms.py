@@ -11,7 +11,7 @@ class UpdateBlogForm(FlaskForm):
 class PostForm(FlaskForm):
     title=StringField('Title', validators=[Required()])
     category=SelectField('Category',choices=[('Music','Music'),('Job','Job'),('News','News')], validators=[Required()])
-    post=TextAreaField('Your Post' validators=[Required()])
+    post=TextAreaField('Your Post' ,validators=[Required()])
     submit=SubmitField('Post')
 
 

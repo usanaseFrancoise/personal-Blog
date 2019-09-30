@@ -5,15 +5,17 @@
         <div class="row">
                 {% if all_comments %}
                 <div class="col-md-7">
-                        <h3 class="text-center" id="coms">   all comment </h3>
+                        <h3 class="text-center" id="coms"> All comment for the Post</h3>
                         {% for comment in all_comments %}
                         <div class="card w-90 mb-3">
                             <div class="card-body">
                             <h5>{{comment.post.title}}</h5>
                             <p class="card-title">{{comment.comment }}</p>
                             <p class="card-text">---{{comment.user.username }}</p>
-                            <a href="{{url_for('.delet',id=comment.id)}}"class="btn btn-info btn-sm">Delete comment</a>
-                            </div>
+                            <!-- <a href="{{url_for('.delet',id =comment.id)}}"  >Delete</a> -->
+                           
+                            
+                        </div>
                     </div>
                     {% endfor %}
                 </div>
@@ -22,14 +24,13 @@
                     </div>
                 </div>
             {%else%}
-          
-            <div class="card w-90 mb-3"> 
-                <div class="card-body">
-                    <p class="card-title">No Comment </p>
-                    </div>
-                </div>
-                <div class="col-md-5">
-                        {{wtf.quick_form(form)}}
+            <div class="card w-90 mb-3">
+                    <div class="card-body">
+                            <p class="card-title"> No Comments for this yet. be the first to comment</p>
+                        </div>
+            </div>
+            <div class="col-md-5 "> 
+                    {{wtf.quick_form(form)}}
                 </div>
                 {% endif %}
             </div>

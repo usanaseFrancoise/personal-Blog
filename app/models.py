@@ -2,6 +2,9 @@ from .import db, login_manager
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import UserMixin
 import datetime
+from datetime import datetime
+datetime.utcnow()
+
 
 
 @login_manager.user_loader
@@ -10,6 +13,7 @@ def load_user(user_id):
 
 
 class User(UserMixin,db.Model):
+
 
     __tablename__='users'
     id=db.Column(db.Integer,primary_key=True)
@@ -47,7 +51,7 @@ class Post(db.Model):
     title=db.Column(db.String(255),nullable = False)
     post=db.Column(db.Text(),nullable = False)
     category=db.Column(db.String(255),index=True,nullable = False)
-    user_id=db.Column(db.Integer,db.Foreigner)
+    user_id=db.Column(db.Integer,db.ForeignKey('users.id'))
 
     # time=db.Column(db.Datetime, default = datetime.utcnow)
 
@@ -61,12 +65,13 @@ class Post(db.Model):
     def __repr__(self):
         return f'Post{self.post}'
 
-class Comment(db,Model):
+class Comment(db.Model):
     __tablename__='comments'
     id=db.Column(db.Integer,primary_key=True)
     comment=db.Column(db.Text())
     user_id=db.Column(db.Integer,db.ForeignKey('users.id'))
     post_id=db.Column(db.Integer,db.ForeignKey('postes.id'))
+
     def save_c(self):
         db.session.add(self)
         db.session.commit()
@@ -78,8 +83,7 @@ class Comment(db,Model):
 
     def __repr__(self):
         return f'comment{self.comment}'
-
 class Quotes:
-    def __init__(self,author.quote):
+    def __init__(self,author,quote):
         self.author=author
-        self quote=quote
+        self .quote=quote
